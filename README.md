@@ -78,7 +78,7 @@ with $r_t = c r_{t-1} + (1-c)\theta + \varepsilon_t$ discrete prcoess (which is 
 \mathcal{L}_{CIR} = \frac{1}{T}\sum_t \ell_{\chi^2}(r_t \mid r_{t-1};a,c,\theta) + \gamma c . 
 ```
 The CIR's root as well as the other models that I've included also will resist the OU regime. The figure below is the result if the OU is imposed. The figure below shows what happens if one tries to impose a modelling condition to an OU likelihood. 
-<img src="clean_code_in_pycharm/Bond Results.png" alt="Project Screenshot" width="800" />
+<img src="clean_code_in_pycharm/Multi-Model.png" alt="Project Screenshot" width="800" />
 
 ### Conclusion:
 The method works as intended, in which it extracts sparse latent factors via likelihood, but needs more extension to include the math for other models other than an OU regime. 
