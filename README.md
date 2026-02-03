@@ -42,7 +42,37 @@ The figure below shows the diagnostics, in which only 4 portofolios have non zer
 
 The train splits shows that it has a strong downward drift for the training period, and a lower level in the test period with mild fluctuations. This means that the portofolio yield ACF has extemely high persistence in which shown in the ACF plot, and the OU-style decays slowly. The mean reversion here is kinda weak, and almost non-existent, and the penalization wasn't strong enough to overcome the data's trend structure. The correlation heatmap shows strong correlation clusters, and the algorithm selects assets from one correlated block and not across blocks, which explains why only few assets carry the entire factor.
 
-<img src="clean_code_in_pycharm/Figure_1.png" alt="Project Screenshot" width="1000" />
+<img src="clean_code_in_pycharm/Figure_1.png" alt="Project Screenshot" width="800" />
 
-### Extension - other diffusion models and interest rate
-Interest rate model diffusions are also included, in which it is the Cox-Ingersoll-Ross, Black-Kariniski, Black-Derman-Toy, and Hull-White (abbreviated usually as CIR, BK, BDT, and HW). 
+### Interest Rate - Indonesian Bond Yields
+The next application is to Indonesian Bond Yields. The model is based observed yield and index series as stochastic state variables. So the analysis is statistical rather than arbitrage-free, and dosen't impose self-financing or replication constraints. The Bond yields are sampled from sovereign instruments, FR-series and much more. The time index is $dt = 1/252$ trading days. Some of the data has some bond prices instead, and to make it the same across all, the ones with prices are converted to yields via $y_i(t) = -\frac{1}{T_i} \log\ \left(\frac{P_i(t)}{100}\right)$. Define a yield vector as:
+```math
+\mathbf{y}(t) =
+\begin{bmatrix}
+y_1(t) \\
+y_2(t) \\
+\vdots \\
+y_d(t)
+\end{bmatrix}
+\in \mathbb{R}^d
+```
+The incremental dynamics is via $\mathbf{Z}_t \;\equiv\; \Delta \mathbf{y}(t) = \mathbf{y}(t) - \mathbf{y}(t-1)$. The weights are thus:
+```math
+X_t \equiv \mathbf{w}^\top \mathbf{Z}_t = \sum_{i=1}^d w_i \, Z_{i,t}
+```
+The general framework for the likelihood is:
+```math
+\min_{w,\vartheta} \mathcal{L}(x(w);\vartheta) + \gamma c \quad \text{s.t.} \quad w \in \mathcal{W}
+```
+Where $\vartheta$ is a general parameter. The figure below
+
+### Other Models and Limitations
+
+```math
+\mathcal{L}_{\text{Vasicek}} = \frac{1}{2} \log a + \frac{1}{2Ta} \sum_t (r_t - c r_{t-1} - (1-c) \theta)^2 + \gamma c,
+```
+with $r_t = c r_{t-1} + (1-c)\theta + \varepsilon_t$ discrete prcoess (which is not that a whole different to the OU prcoess). The CIR has $r_t = c r_{t-1} + (1-c)\theta + \sigma\sqrt{r_{t-1}}\varepsilon_t$ and conditional loglikelihood via the square root of interest upon :
+```math
+\mathcal{L}_{CIR} = \frac{1}{T}\sum_t \ell_{\chi^2}(r_t \mid r_{t-1};a,c,\theta) + \gamma c . 
+```
+
