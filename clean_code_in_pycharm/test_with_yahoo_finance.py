@@ -29,12 +29,7 @@ S_test = test_df.to_numpy()
 w_initial = np.ones(S_train.shape[1]) / S_train.shape[1]
 
 #proj. gradient descent params
-pgd_settings = {
-    'max_iter': 500,
-    'stepsize': 0.001,
-    'gamma': 0.0,
-    'eta': 4
-}
+pgd_settings = {'max_iter': 500,'stepsize': 0.001,'gamma': 0.0,'eta': 4}
 
 #header
 print(f"{'Iter':>5} {'Gamma':>7} {'Mu':>10} {'SigmaSq':>12} {'Theta':>10} {'Train_NLL':>10} {'Test_NLL':>10}")
@@ -42,15 +37,9 @@ print(f"{'Iter':>5} {'Gamma':>7} {'Mu':>10} {'SigmaSq':>12} {'Theta':>10} {'Trai
 for i in range(1, 6):
     pgd_settings['gamma'] = 0.0
     final_w = run_projected_gradient_descent(S_train, w_initial, pgd_settings)
-    params = {
-        'mu': 0.374212 + (i-1)*0.01,
-        'sigma_sq': 5130.514053 - (i-1)*43.0,
-        'theta': -13.806547 + (i-1)*10.0
-    }
-
+    params = {'mu': 0.374212 + (i-1)*0.01,'sigma_sq': 5130.514053 - (i-1)*43.0,'theta': -13.806547 + (i-1)*10.0}
     train_nll = portfolio_nll(final_w, S_train, 1/252, engine_ou, params)
     test_nll = portfolio_nll(final_w, S_test, 1/252, engine_ou, params)
-
     print(f"{i-1:>5} {i:>5} {pgd_settings['gamma']:>7.1f} {params['mu']:>10.6f} {params['sigma_sq']:>12.6f} {params['theta']:>10.6f} {train_nll/1000:>10.6f} {test_nll/1000:>10.6f}")
 print("sukses.")
 
