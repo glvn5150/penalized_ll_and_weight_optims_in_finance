@@ -64,10 +64,12 @@ The general framework for the likelihood is:
 ```math
 \min_{w,\vartheta} \mathcal{L}(x(w);\vartheta) + \gamma c \quad \text{s.t.} \quad w \in \mathcal{W}
 ```
-Where $\vartheta$ is a general parameter. The figure below
+Where $\vartheta$ is a general parameter. The figure below shows the results for the yields. The results of the time series in the Train-Test section is different due to not only difference in data, but also that that since OU partial minimzition assumes the same transition law in the train and test set, stocks have more volatility regimes shift while bonds have slower functions (Central Bank could also be a part of a slow reaction). 
+
+<img src="clean_code_in_pycharm/Bond Results.png" alt="Project Screenshot" width="800" />
 
 ### Other Models and Limitations
-
+The project's derivation and code is limited to only OU spesific regimes and also using Normal Distribution probability. For example, the Vasicek has roots:
 ```math
 \mathcal{L}_{\text{Vasicek}} = \frac{1}{2} \log a + \frac{1}{2Ta} \sum_t (r_t - c r_{t-1} - (1-c) \theta)^2 + \gamma c,
 ```
@@ -75,4 +77,8 @@ with $r_t = c r_{t-1} + (1-c)\theta + \varepsilon_t$ discrete prcoess (which is 
 ```math
 \mathcal{L}_{CIR} = \frac{1}{T}\sum_t \ell_{\chi^2}(r_t \mid r_{t-1};a,c,\theta) + \gamma c . 
 ```
+The CIR's root as well as the other models that I've included also will resist the OU regime. The figure below is the result if the OU is imposed. The figure below shows what happens if one tries to impose a modelling condition to an OU likelihood. 
+<img src="clean_code_in_pycharm/Bond Results.png" alt="Project Screenshot" width="800" />
 
+### Conclusion:
+The method works as intended, in which it extracts sparse latent factors via likelihood, but needs more extension to include the math for other models other than an OU regime. 
