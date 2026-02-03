@@ -1,6 +1,6 @@
 # penalized_ll_and_weight_optims_in_finance
 ### Preliminaries
-This rep is a personal project, for an implementation of a penalized log likelihood and weight optimizations in finance and diffusion models. The main idea is inspired by Zhang,  Leung, and Aravkin (2020). The complete top-to-bottom code is via the the .ipynb  [Penalized_LL_and_Diffusion_Models_for_Finance.ipynb](Penalized_LL_and_Diffusion_Models_for_Finance.ipynb) file of We start with an asset price series stack as $S \in \mathbb{R}^{(T+1)\times m}$, and a linear portofolio of $x_t = S_t^\top w$.The original paper uses an Ornstein-Uhlenbeck process (OU) in which the equation is:
+This rep is a personal project, for an implementation of a penalized log likelihood and weight optimizations in finance and diffusion models. The main idea is inspired by Zhang,  Leung, and Aravkin (2020). The complete top-to-bottom code is via the the ipynb file of  [Penalized_LL_and_Diffusion_Models_for_Finance.ipynb](Penalized_LL_and_Diffusion_Models_for_Finance.ipynb).We start with an asset price series stack as $S \in \mathbb{R}^{(T+1)\times m}$, and a linear portofolio of $x_t = S_t^\top w$. The original paper uses an Ornstein-Uhlenbeck process (OU) in which the equation is:
 ```math
 dx_t = \mu(\theta - x_t)\,dt + \sigma\,dB_t ,
 ```
@@ -36,6 +36,13 @@ The result is thus $\min_{w \in \mathcal{W}} f_3(w)$ where $\mathcal{W}= \left\\
 ```math
 \Pi_{\mathcal{W}}(x) = \text{sign}(x) \odot \Pi_{\Delta_1 \cap \|·\|_0 \le \eta}(|x|)
 ```
-The algorithm starts by sorting the weights , keep the top $\eta$, project into the simplex, and restore the signs. The clean code is in [test_with_yahoo_finance](clean_code_in_pycharm/test_with_yahoo_finance.py), where i applied it to Indonesian stocks. The figure below shows the diagnostics <img src="clean_code_in_pycharm/Figure_1.png" alt="Project Screenshot" width="1000" />
+The algorithm starts by sorting the weights , keep the top $\eta$, project into the simplex, and restore the signs. The clean code is in [test_with_yahoo_finance](clean_code_in_pycharm/test_with_yahoo_finance.py), where I applied it to Indonesian stocks via YahooFinance. 
+
+The figure below shows the diagnostics, in which only 4 portofolios have non zero weights. The dominant ones are around 50% and 35% and other small ones that sums up to 1. This shows the $l_0$ sparsity doing its job, so that it basically selects a minimal subset of assets that best supports an OU-like dynamic. The porto-yield change time series also has a persistent downward drift using the previous findings of the algorithm finding the best mean-reverting combination. 
+
+The train splits shows that it has a strong downward drift for the training period, and a lower level in the test period with mild fluctuations. This means that the portofolio yield ACF has extemely high persistence in which shown in the ACF plot, and the OU-style decays slowly. The mean reversion here is kinda weak, and almost non-existent, and the penalization wasn't strong enough to overcome the data's trend structure. The correlation heatmap shows strong correlation clusters, and the algorithm selects assets from one correlated block and not across blocks, which explains why only few assets carry the entire factor.
+
+<img src="clean_code_in_pycharm/Figure_1.png" alt="Project Screenshot" width="1000" />
+
 ### Extension - other diffusion models and interest rate
 Interest rate model diffusions are also included, in which it is the Cox-Ingersoll-Ross, Black-Kariniski, Black-Derman-Toy, and Hull-White (abbreviated usually as CIR, BK, BDT, and HW). 
