@@ -1,6 +1,6 @@
 # penalized_ll_and_weight_optims_in_finance
 ### Preliminaries
-This rep is a personal project, for an implementation of a penalized log likelihood and weight optimizations in finance and diffusion models. The main idea is inspired by Zhang,  Leung, and Aravkin (2020). The complete top-to-bottom code is via the the ipynb file of  [Penalized_LL_and_Diffusion_Models_for_Finance.ipynb](Penalized_LL_and_Diffusion_Models_for_Finance.ipynb).We start with an asset price series stack as $S \in \mathbb{R}^{(T+1)\times m}$, and a linear portofolio of $x_t = S_t^\top w$. The original paper uses an Ornstein-Uhlenbeck process (OU) in which the equation is:
+This rep is a personal project, for an implementation of a penalized log likelihood and weight optimizations in finance and diffusion models. The main idea is inspired by Zhang,  Leung, and Aravkin (2020). The complete top-to-bottom code is via the the ipynb file of  [Penalized_LL_and_Diffusion_Models_for_Finance.ipynb](Penalized_LL_and_Diffusion_Models_for_Finance (4).ipynb).We start with an asset price series stack as $S \in \mathbb{R}^{(T+1)\times m}$, and a linear portofolio of $x_t = S_t^\top w$. The original paper uses an Ornstein-Uhlenbeck process (OU) in which the equation is:
 ```math
 dx_t = \mu(\theta - x_t)\,dt + \sigma\,dB_t ,
 ```
@@ -56,6 +56,9 @@ y_d(t)
 \end{bmatrix}
 \in \mathbb{R}^d
 ```
+The figure below plots bond yields normalized:
+<img src="clean_code_in_pycharm/Indo Bond Index.png" alt="Project Screenshot" width="800" />
+
 The incremental dynamics is via $\mathbf{Z}_t \;\equiv\; \Delta \mathbf{y}(t) = \mathbf{y}(t) - \mathbf{y}(t-1)$. The weights are thus:
 ```math
 X_t \equiv \mathbf{w}^\top \mathbf{Z}_t = \sum_{i=1}^d w_i \, Z_{i,t}
@@ -64,7 +67,7 @@ The general framework for the likelihood is:
 ```math
 \min_{w,\vartheta} \mathcal{L}(x(w);\vartheta) + \gamma c \quad \text{s.t.} \quad w \in \mathcal{W}
 ```
-Where $\vartheta$ is a general parameter. The figure below shows the results for the yields. The results of the time series in the Train-Test section is different due to not only difference in data, but also that that since OU partial minimzition assumes the same transition law in the train and test set, stocks have more volatility regimes shift while bonds have slower functions (Central Bank could also be a part of a slow reaction). 
+Where $\vartheta$ is a general parameter. The figure below shows the results for the yields. The results of the time series in the Train-Test section is different due to not only difference in data, but also that that since OU partial minimzition assumes the same transition law in the train and test set, stocks have more volatility regimes shift while bonds have slower functions (Central Bank could also be a part of a slow reaction and other Macro-economic / structural multi-factors).
 
 <img src="clean_code_in_pycharm/Bond Results.png" alt="Project Screenshot" width="800" />
 
